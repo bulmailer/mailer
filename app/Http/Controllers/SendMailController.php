@@ -1,0 +1,116 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Jobs\SendMailJob;
+use App\Models\ExportStatuses;
+use App\Models\MailHistory;
+use Illuminate\Http\Request;
+use Hash;
+use Session;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+class SendMailController extends Controller
+{
+    public function sendEmail(Request $request)
+    {    
+        $request->validate([
+            'from' => 'required',
+            'mail' => 'required',
+            'subject' => 'required',
+            'addresses' => 'required',
+        ]);
+        info("this->mail ".json_encode($request->mail));
+        $add = explode(",", $request->addresses);
+        $saved = MailHistory::create([
+            'from' => $request->from,
+            'mail' => $request->mail,
+            'subject' => $request->subject,
+            'company' => $request->company_name,
+            'failed' => '',
+            'username' => $request->username,
+            'addresses' => $request->addresses
+          ]);
+        $data = [
+            'from' => $request->from,
+            'mail' => $request->mail,
+            'subject' => $request->subject,
+            'company' => $request->company_name,
+            'history_id' => $saved->id
+        ];
+        $number = 'mailer'.mt_rand(10000000, 99999999999).time(); // better than rand()
+        $status = ExportStatuses::create([
+            'token' => $number,
+            'percentage' => 0,
+            'batches' => count(array_chunk($add, 10))
+          ]);
+        SendMailJob::dispatch($data, $add, $status);
+        return response([
+            'message' => 'Sending mail...',
+            'status' => $status
+        ], 200);
+   
+    }
+
+    public function clearStatus(Request $request)
+    {
+        $request->validate([
+            'statusId' => 'required'
+        ]);
+        $status = ExportStatuses::where('id', $request->statusId)->delete();
+        return response([
+            'message' => 'Status cleared',
+        ], 200);
+    }
+
+    public function getHistory(Request $request)
+    {
+        $user = Auth::user();
+        info("user ".json_encode($user));
+        if($request->del){
+            MailHistory::where('username', $request->username)->where('id', $request->del)->delete(); 
+        }
+        $all = MailHistory::where('username', $request->username)->count();
+        $from = is_numeric($request->from) ? $request->from  : 0;
+        $data = MailHistory::where('username', $request->username)->orderBy('id', 'DESC')->skip($from)->take(10)->get();
+        if($data) {
+            $showed = $from + 10;
+            $next = $all > $showed ? $showed : 0;
+            $prev = $from > 0 ? $from - 10 : 0;
+            $meta = (object)['nav' => $all > 10, 'next' => $next, 'prev' => $prev];
+            return response([
+                'message' => 'history found',
+                'data' => $data,
+                'meta' => $meta
+            ], 200);
+        } else {
+            return response([
+                'message' => 'history not found',
+                'data' => null
+            ], 404);
+        }
+    
+    }
+
+    public function getStatus(Request $request)
+    {
+        $request->validate([
+            'statusId' => 'required'
+        ]);
+        $status = ExportStatuses::find($request->statusId);
+        if($status) {
+            return response([
+                'message' => 'Status found',
+                'status' => $status
+            ], 200);
+        } else {
+            return response([
+                'message' => 'Status not found',
+                'status' => null
+            ], 404);
+        }
+        
+    }
+
+}
