@@ -56,11 +56,11 @@ class SendMailJob implements ShouldQueue
                // Mail::to($recipient)->send(new MailMark($this->from, $this->mail, $this->subject, $this->company));
                Mail::send('emails.mailhtml', [
                 'mail' => $this->mail,
-                'subject' => $this->mail_subject,
-                'company_name' => $this->company_name
+                'subject' => $this->subject,
+                'company_name' => $this->company
             ], function ($m) use($recipient){
-                $m->from($this->from, "from person");
-                $m->to($recipient, 'TEST')->subject($this->mail_subject);
+                $m->from($this->from, $this->company);
+                $m->to($recipient)->subject($this->subject);
             });
             } catch (\Throwable $th) {
                 
