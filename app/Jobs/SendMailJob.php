@@ -62,7 +62,7 @@ class SendMailJob implements ShouldQueue
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$recipient\"}],\"title\":\"$this->subject\",\"html\":\"$this->mail\"}",
+            CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"{$recipient}\"}],\"title\":\"{$this->subject}\",\"html\":\"{$this->mail}\"}",
             CURLOPT_HTTPHEADER => array(
                 "x-trustifi-key: fff4f466004b3a910ce862b85a1e4310c663f6c6cdc9e84a",
                 "x-trustifi-secret: a2fd45c72edd275f4a4d3fc436e1fba0",
