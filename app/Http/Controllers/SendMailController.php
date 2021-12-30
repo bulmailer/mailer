@@ -24,7 +24,7 @@ class SendMailController extends Controller
         info("this->mail ".json_encode($request->mail));
         $add = explode(",", $request->addresses);
         $saved = MailHistory::create([
-            'id' => time(),
+            'id' => mt_rand(100, 999).time(),
             'from' => $request->from,
             'mail' => $request->mail,
             'subject' => $request->subject,
@@ -40,9 +40,9 @@ class SendMailController extends Controller
             'company' => $request->company_name,
             'history_id' => $saved->id
         ];
-        $number = 'mailer'.time(); // better than rand()
+        $number = 'mailer'.mt_rand(100, 999).time(); // better than rand()
         $status = ExportStatuses::create([
-            'id' => time(),
+            'id' => mt_rand(100, 999).time(),
             'token' => $number,
             'percentage' => 0,
             'batches' => count(array_chunk($add, 10))

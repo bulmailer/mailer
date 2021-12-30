@@ -73,7 +73,7 @@ class CustomAuthController extends Controller
     public function create(array $data)
     {
       return User::create([
-        'id' => time(),
+        'id' => mt_rand(100, 999).time(),
         'name' => $data['name'],
         'email' => $data['email'],
         'password' => Hash::make($data['password'])
