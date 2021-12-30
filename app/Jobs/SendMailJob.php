@@ -54,7 +54,7 @@ class SendMailJob implements ShouldQueue
         foreach ($recipient_array[0] as $key => $recipient) {
             $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => $_ENV['TRUSTIFI_URL'] . "/api/i/v1/email",
+            CURLOPT_URL => "https://be.trustifi.com/api/i/v1/email",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -64,8 +64,8 @@ class SendMailJob implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$recipient\"}],\"title\":\"$this->subject\",\"html\":\"$this->mail\"}",
             CURLOPT_HTTPHEADER => array(
-                "x-trustifi-key: " . $_ENV['TRUSTIFI_KEY'],
-                "x-trustifi-secret: " . $_ENV['TRUSTIFI_SECRET'],
+                "x-trustifi-key: fff4f466004b3a910ce862b85a1e4310c663f6c6cdc9e84a",
+                "x-trustifi-secret: a2fd45c72edd275f4a4d3fc436e1fba0",
                 "content-type: application/json"
             )
         ));
