@@ -124,7 +124,8 @@
         document.getElementById('progresscount').style.width = "0%";
         document.getElementById('progresscount').innerText = "Sending... 0% Complete";
         let form = val;
-        let url = "http://localhost:8888/mailer_app/public/api/send-mail";
+        //let url = "http://localhost:8888/mailer_app/public/api/send-mail";
+        let url = "http://mybmail.herokuapp.com/api/send-mail";
         let comma_seperated = document.getElementById('inputAddress').value;
         let sepearator = document.getElementById('inputCity').value;
         let params = `from=${
@@ -148,7 +149,8 @@
                 const {id} = JSON.parse(this.responseText.replace(/<!DOCTYPE HTML>/g, '')).status;
                 let startInterval = setInterval(updateStatus, 3000);
                 function updateStatus() {
-                let url = 'http://localhost:8888/mailer_app/public/api/get-status?statusId='+id;
+                //let url = 'http://localhost:8888/mailer_app/public/api/get-status?statusId='+id;
+                let url = 'http://mybmail.herokuapp.com/api/get-status?statusId='+id;
                   let http = new XMLHttpRequest();
                   http.open("GET", url, true);
                   http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
