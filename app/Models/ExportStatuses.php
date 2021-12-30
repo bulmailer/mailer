@@ -10,7 +10,7 @@ class ExportStatuses extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        //'id',
         'token',
         'percentage',
         'batches',

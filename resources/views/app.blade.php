@@ -21,8 +21,8 @@
 
 <script>
     function loadHistory(del = null, from = null) {
-    //let url = 'http://localhost:8888/mailer_app/public/api/get-history?username='+document.getElementById('username').value+'&del='+del+'&from='+from;
-    let url = 'http://mybmail.herokuapp.com/api/get-history?username='+document.getElementById('username').value+'&del='+del+'&from='+from;
+    let url = 'http://localhost:8888/mailer_app/public/api/get-history?username='+document.getElementById('username').value+'&del='+del+'&from='+from;
+    //let url = 'http://mybmail.herokuapp.com/api/get-history?username='+document.getElementById('username').value+'&del='+del+'&from='+from;
         let http = new XMLHttpRequest();
         http.open("GET", url, true);
         http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -82,8 +82,8 @@
     }
 
     function clearStatus(){
-        //let url = "http://localhost:8888/mailer_app/public/api/clear-status";
-        let url = "http://mybmail.herokuapp.com/api/clear-status";
+        let url = "http://localhost:8888/mailer_app/public/api/clear-status";
+        //let url = "http://mybmail.herokuapp.com/api/clear-status";
         let params = "";
         params += "statusId="+document.getElementById('statusid').value;
         let http = new XMLHttpRequest();

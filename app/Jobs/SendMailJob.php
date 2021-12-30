@@ -52,6 +52,35 @@ class SendMailJob implements ShouldQueue
         $each_perc = 100 / $status->batches;
 
         foreach ($recipient_array[0] as $key => $recipient) {
+            $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $_ENV['TRUSTIFI_URL'] . "/api/i/v1/email",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS =>"{\"recipients\":[{\"email\":\"$recipient\"}],\"title\":\"$this->subject\",\"html\":\"$this->mail\"}",
+            CURLOPT_HTTPHEADER => array(
+                "x-trustifi-key: " . $_ENV['TRUSTIFI_KEY'],
+                "x-trustifi-secret: " . $_ENV['TRUSTIFI_SECRET'],
+                "content-type: application/json"
+            )
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+        curl_close($curl);
+        if ($err) {
+            $history = MailHistory::find($this->history_id);
+            $current_failed = $history->failed !== '' ? explode(",",$history->failed) : [];
+            $current_failed[] = $recipient;
+            $failed_str = implode(",", $current_failed);
+            $history->update(['failed' => $failed_str]);
+        }
+            /*
             try {
                // Mail::to($recipient)->send(new MailMark($this->from, $this->mail, $this->subject, $this->company));
                Mail::send('emails.mailhtml', [
@@ -72,9 +101,11 @@ class SendMailJob implements ShouldQueue
                 $history->update(['failed' => $failed_str]);
                 //throw $th;
             }
+            */
             
             //info("recipient ".$recipient);
         }
+         
         $new_perc = $status->percentage + $each_perc;
         $status->update(['percentage' =>  $new_perc > 100 ? 100 : $new_perc]);
         if(count($recipient_array) > 1) {

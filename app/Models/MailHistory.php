@@ -10,7 +10,7 @@ class MailHistory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
+        //'id',
         'from',
         'mail',
         'subject',
