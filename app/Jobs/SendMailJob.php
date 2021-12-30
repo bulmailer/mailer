@@ -62,7 +62,7 @@ class SendMailJob implements ShouldQueue
                 $current_failed[] = $recipient;
                 $failed_str = implode(",", $current_failed);
                 $history->update(['failed' => $failed_str]);
-                throw $th;
+                //throw $th;
             }
             
             //info("recipient ".$recipient);
