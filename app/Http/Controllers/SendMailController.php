@@ -75,7 +75,7 @@ class SendMailController extends Controller
         }
         $all = MailHistory::where('username', $request->username)->count();
         $from = is_numeric($request->from) ? $request->from  : 0;
-        $data = MailHistory::where('username', $request->username)->orderBy('id', 'DESC')->skip($from)->take(10)->get();
+        $data = MailHistory::where('username', $request->username)->orderBy('created_at', 'DESC')->skip($from)->take(10)->get();
         if($data) {
             $showed = $from + 10;
             $next = $all > $showed ? $showed : 0;
