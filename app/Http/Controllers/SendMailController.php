@@ -20,8 +20,12 @@ class SendMailController extends Controller
             'mail' => 'required',
             'subject' => 'required',
             'addresses' => 'required',
+            'smtp_host' => 'required',
+            'smtp_user' => 'required',
+            'smtp_pass' => 'required',
+            'smtp_enc' => 'required',
+            'smtp_port' => 'required'
         ]);
-        info("this->mail ".json_encode($request->mail));
         $add = explode(",", $request->addresses);
         $saved = MailHistory::create([
             'id' => mt_rand(100, 999).time(),
@@ -38,7 +42,12 @@ class SendMailController extends Controller
             'mail' => $request->mail,
             'subject' => $request->subject,
             'company' => $request->company_name,
-            'history_id' => $saved->id
+            'history_id' => $saved->id,
+            'smtp_host' => $request->smtp_host,
+            'smtp_user' => $request->smtp_user,
+            'smtp_pass'=> $request->smtp_pass,
+            'smtp_enc' => $request->smtp_enc,
+            'smtp_port' => $request->smtp_port
         ];
         $number = 'mailer'.mt_rand(100, 999).time(); // better than rand()
         $status = ExportStatuses::create([

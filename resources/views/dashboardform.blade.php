@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="container row">
+<div style="margin-right: 20px; margin-left: 20px" class="row">
   <div class="col-8">
     <form onsubmit="return sendMail(this)" >
     <input type="hidden" value="{{ $user->email }}" id="username"/>
@@ -57,11 +57,42 @@
         </div>
       </div>
       <button id="sendbut" type="submit" disabled class="btn btn-primary">Send</button>
-    </form>
+    
   </div>
   <div class="col-4" style="border-left: 2px solid rgba(0, 0, 0, 0.075);">
+  <h5>SMTP SETTINGS</h5>
+  <div class="form-row row">
+        <div class="form-group col-md-4">
+          <label for="host">HOST</label>
+          <input type="text" class="form-control" id="host" required>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="muser">USERNAME</label>
+          <input type="text" class="form-control" id="muser" required>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="mpass">PASSWORD</label>
+          <input type="text" class="form-control" id="mpass" required>
+        </div>
+  </div>
+  <div class="form-row row">
+        <div class="form-group col-md-6">
+          <label for="enc">ENCRYPTION</label>
+          <select id="enc" class="form-control">
+            <option value="tls">tls</option>
+            <option value="ssl">ssl</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="mport">PORT</label>
+          <input type="text" class="form-control" id="mport" required>
+        </div>
+        
+    </div>
+  </form>
+  <div style="height:30px; border-bottom: 2px solid rgba(0, 0, 0, 0.075);"></div>
   <h5>Mail list</h5>
-  <table style="table-layout:fixed; width:120%;" class="table table-striped">
+  <table style="width:100%;" class="table table-striped">
     <thead>
         <tr>
             <th>#</th>
@@ -136,10 +167,24 @@
           document.getElementById('inputsubject').value
         }&company_name=${
           document.getElementById('inputZip').value
-        }&username=${document.getElementById('username').value
-        }&addresses=${comma_seperated.split(sepearator).map(element => {
+        }&username=${
+          document.getElementById('username').value
+        }&addresses=${
+          comma_seperated.split(sepearator).map(element => {
           return element.trim()
-        })}`
+        })
+      }&smtp_host=${
+        document.getElementById('host').value
+      }&smtp_user=${
+        document.getElementById('muser').value
+      }&smtp_pass=${
+        document.getElementById('mpass').value
+      }&smtp_enc=${
+        document.getElementById('enc').value
+      }&smtp_port=${
+        document.getElementById('mport').value
+      }
+        `
 
         let http = new XMLHttpRequest();
         http.open("POST", url, true);

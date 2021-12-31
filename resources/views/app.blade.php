@@ -55,8 +55,8 @@
                 const {id, subject, addresses, failed } = element;
                 key++
                 document.getElementById('thebody').innerHTML += `<tr>
-                <td width="5px" onclick='populateform(${JSON.stringify(element).replace(/'/g,"++")})' style="cursor:pointer"><i style="color: #23527c " class="fa fa-edit"></i> ${addresses.split(",").length}</td>
-                <td style="white-space:nowrap; width: 200px; overflow: auto">${subject}</td>
+                <td  onclick='populateform(${JSON.stringify(element).replace(/'/g,"++")})' style="cursor:pointer"><i style="color: #23527c " class="fa fa-edit"></i> ${addresses.split(",").length}</td>
+                <td style="white-space: nowrap; text-overflow:ellipsis; overflow: hidden; max-width:200px;">${subject}</td>
                 <td onclick='populateform(${JSON.stringify(element).replace(/'/g,"++")}, true)' style="cursor:pointer">${failed !== '' ? `<i style="color: #23527c " class="fa fa-refresh"></i> ${failed.split(",").length}` : 0}</td>
                 <td><a href="#" onclick="document.getElementById('todel').value =${id};document.getElementById('id01').style.display='block';" style="color: #d9534f "><i class="fa fa-trash"></i></a></td>
                 </tr>`;
@@ -338,9 +338,9 @@ hr {
     </nav>
         <!--<div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">-->
         <div class="relative items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-        <div class="container">
-            @yield('content')
-        </div>
+        
+        @yield('content')
+        
         
         </div>
         <div style="background: #191919; width:100%; position:fixed; bottom: 0; z-index: 1; left:0;"> 
