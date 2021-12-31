@@ -113,7 +113,7 @@ class SendMailJob implements ShouldQueue
 
                 //Recipients
                 $mail->setFrom($this->from, $this->company);
-                $mail->addAddress($recipient);     //Add a recipient
+                $mail->addAddress($recipient, explode("@", $recipient)[0]);     //Add a recipient
                 //$mail->addAddress('ellen@example.com');               //Name is optional
                 //$mail->addReplyTo('info@example.com', 'Information');
                 //$mail->addCC('cc@example.com');
